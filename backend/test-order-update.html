@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Order Status Update</title>
+</head>
+<body>
+    <h1>Test Order Status Update</h1>
+    <input type="text" id="orderId" placeholder="Order ID">
+    <select id="status">
+        <option value="placed">Placed</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="preparing">Preparing</option>
+        <option value="out_for_delivery">Out for Delivery</option>
+        <option value="delivered">Delivered</option>
+    </select>
+    <button onclick="updateStatus()">Update Status</button>
+
+    <script>
+        async function updateStatus() {
+            const orderId = document.getElementById('orderId').value;
+            const status = document.getElementById('status').value;
+            
+            const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': 'YOUR_JWT_TOKEN_HERE' // Replace with actual token
+                },
+                body: JSON.stringify({ status })
+            });
+            
+            const result = await response.json();
+            console.log('Update result:', result);
+            alert(`Status updated to: ${status}`);
+        }
+    </script>
+</body>
+</html>
