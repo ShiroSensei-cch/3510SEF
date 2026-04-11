@@ -42,7 +42,7 @@ A full-stack food ordering application with real-time order tracking built with 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/food-order-app.git
+   git clone https://github.com/ShiroSensei/3510SEF.git
    cd food-order-app
 
 2. **Setup Backend**
