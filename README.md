@@ -68,8 +68,8 @@ A full-stack food ordering application with real-time order tracking built with 
 
    ## Environment Setup
 
-1. Create a new file `.env` in `backend`
-2. Copy `backend/.env.example` to `backend/.env`
-3. Update the values as needed
-4. For MongoDB Atlas, replace the URI with your cloud connection string
+   1. Create a new file `.env` in `backend`
+   2. Copy `backend/.env.example` to `backend/.env`
+   3. Update the values as needed
+   4. For MongoDB Atlas, replace the URI with your cloud connection string
 
