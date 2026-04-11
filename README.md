@@ -60,7 +60,10 @@ A full-stack food ordering application with real-time order tracking built with 
    ```bash
    cd backend && npm run dev
    ```
+<<<<<<< HEAD
 
+=======
+>>>>>>> a94a1e27644a7a6db3a025fb950a24f99e21dfc5
    # Terminal 2 - Frontend  
    ```bash
    cd frontend && npm start
