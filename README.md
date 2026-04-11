@@ -43,19 +43,23 @@ A full-stack food ordering application with real-time order tracking built with 
 1. **Clone the repository**
    ```bash
    git clone https://github.com/ShiroSensei-cch/3510SEF.git
-   cd food-order-app
+   cd 3510SEF
 
 2. **Setup Backend**
+   ```bash
    cd backend
    npm install
 
 3. **Setup Frontend**
+   ```bash
    cd ../frontend
    npm install
 
 5. **Run the Application**
    # Terminal 1 - Backend
+   ```bash
    cd backend && npm run dev
  
    # Terminal 2 - Frontend  
+   ```bash
    cd frontend && npm start
