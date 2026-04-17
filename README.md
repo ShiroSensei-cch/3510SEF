@@ -81,3 +81,13 @@ A full-stack food ordering application with real-time order tracking built with 
    ```bash
    cd frontend && npm start
    ```
+P.S. Example User
+      
+      id:pizza.owner@example.com
+      pw:owner123
+
+      id:burger.owner@example.com
+      pw:owner123
+
+      id:sushi.owner@example.com
+      pw:owner123
