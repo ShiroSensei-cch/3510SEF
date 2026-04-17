@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "es6",
-    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

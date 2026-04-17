@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem('token', token);
     axios.defaults.headers.common['x-auth-token'] = token;
     setCurrentUser(user);
-    return user;
+    return user;  // <-- add this line
   };
 
   const register = async (userData) => {

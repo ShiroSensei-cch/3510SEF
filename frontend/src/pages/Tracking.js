@@ -2,19 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import axios from 'axios';
+import TrackingMap from '../components/TrackingMap.js';
 
 const Tracking = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [socket, setSocket] = useState(null);
+  const [deliveryLocation, setDeliveryLocation] = useState(null);
 
+  // Socket connection with token authentication
   useEffect(() => {
-    // Connect to Socket.io
-    const newSocket = io('http://localhost:5000');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found, please login');
+      return;
+    }
+
+    const newSocket = io('http://localhost:5000', {
+      auth: { token }
+    });
     setSocket(newSocket);
 
-    // Join the order room for real-time updates
+    // Join order room for status updates
     newSocket.emit('join_order', orderId);
 
     // Listen for order status updates
@@ -23,19 +33,24 @@ const Tracking = () => {
       setOrder(prevOrder => prevOrder ? { ...prevOrder, status: data.status } : prevOrder);
     });
 
+    // Listen for delivery person's location updates
+    newSocket.on('delivery_location_update', (data) => {
+      console.log('Delivery location update:', data);
+      setDeliveryLocation([data.lat, data.lng]);
+    });
+
     return () => {
       newSocket.close();
     };
   }, [orderId]);
 
+  // Fetch order details
   useEffect(() => {
     const fetchOrder = async () => {
       try {
         const token = localStorage.getItem('token');
         const res = await axios.get(`http://localhost:5000/api/orders/${orderId}`, {
-          headers: {
-            'x-auth-token': token
-          }
+          headers: { 'x-auth-token': token }
         });
         setOrder(res.data);
       } catch (err) {
@@ -44,55 +59,28 @@ const Tracking = () => {
         setLoading(false);
       }
     };
-    
     fetchOrder();
   }, [orderId]);
 
+  // Mock coordinates (in real app, fetch restaurant location from DB and geocode delivery address)
+  const restaurantLocation = [22.3193, 114.1694]; // Replace with actual restaurant lat/lng
+  const customerLocation = [22.3225, 114.1722];   // Replace with geocoded delivery address
+
   const statusSteps = [
-    { 
-      status: 'placed', 
-      label: 'Order Placed', 
-      description: 'We have received your order',
-      icon: '📝'
-    },
-    { 
-      status: 'confirmed', 
-      label: 'Order Confirmed', 
-      description: 'Restaurant has confirmed your order',
-      icon: '✅'
-    },
-    { 
-      status: 'preparing', 
-      label: 'Preparing Food', 
-      description: 'Chef is cooking your delicious meal',
-      icon: '👨‍🍳'
-    },
-    { 
-      status: 'out_for_delivery', 
-      label: 'Out for Delivery', 
-      description: 'Your food is on the way!',
-      icon: '🚗'
-    },
-    { 
-      status: 'delivered', 
-      label: 'Delivered', 
-      description: 'Enjoy your meal!',
-      icon: '🎉'
-    }
+    { status: 'placed', label: 'Order Placed', description: 'We have received your order', icon: '📝' },
+    { status: 'confirmed', label: 'Order Confirmed', description: 'Restaurant has confirmed your order', icon: '✅' },
+    { status: 'preparing', label: 'Preparing Food', description: 'Chef is cooking your delicious meal', icon: '👨‍🍳' },
+    { status: 'out_for_delivery', label: 'Out for Delivery', description: 'Your food is on the way!', icon: '🚗' },
+    { status: 'delivered', label: 'Delivered', description: 'Enjoy your meal!', icon: '🎉' }
   ];
 
   const currentStatusIndex = statusSteps.findIndex(step => step.status === order?.status);
 
-  // Calculate estimated delivery time (mock calculation)
   const getEstimatedDeliveryTime = () => {
     if (!order) return '';
     const created = new Date(order.createdAt);
-    const estimated = new Date(created.getTime() + 45 * 60000); // +45 minutes
-    return estimated.toLocaleTimeString('en-HK', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      hour12: true 
-    });
+    const estimated = new Date(created.getTime() + 45 * 60000);
+    return estimated.toLocaleTimeString('en-HK', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
   if (loading) {
@@ -147,32 +135,36 @@ const Tracking = () => {
           </div>
         </div>
 
+        {/* Map Component - shows live delivery location when out_for_delivery */}
+        {order.status === 'out_for_delivery' && (
+          <div className="map-section">
+            <h3>Live Delivery Tracking</h3>
+            <TrackingMap
+              deliveryLocation={deliveryLocation}
+              restaurantLocation={restaurantLocation}
+              customerLocation={customerLocation}
+            />
+          </div>
+        )}
+
         <div className="tracking-progress-container">
           <div className="current-status-banner">
-            <div className="status-icon">
-              {statusSteps[currentStatusIndex]?.icon}
-            </div>
+            <div className="status-icon">{statusSteps[currentStatusIndex]?.icon}</div>
             <div className="status-info">
               <h2>Current Status</h2>
-              <p className="status-text">
-                {order.status.replace(/_/g, ' ').toUpperCase()}
-              </p>
+              <p className="status-text">{order.status.replace(/_/g, ' ').toUpperCase()}</p>
             </div>
           </div>
 
           <div className="progress-steps">
             {statusSteps.map((step, index) => (
-              <div 
-                key={step.status} 
+              <div
+                key={step.status}
                 className={`progress-step ${index <= currentStatusIndex ? 'completed' : ''} ${index === currentStatusIndex ? 'current' : ''}`}
               >
                 <div className="step-indicator">
-                  <div className="step-circle">
-                    {index <= currentStatusIndex ? '✓' : index + 1}
-                  </div>
-                  {index < statusSteps.length - 1 && (
-                    <div className="step-connector"></div>
-                  )}
+                  <div className="step-circle">{index <= currentStatusIndex ? '✓' : index + 1}</div>
+                  {index < statusSteps.length - 1 && <div className="step-connector"></div>}
                 </div>
                 <div className="step-content">
                   <div className="step-icon">{step.icon}</div>
@@ -192,12 +184,8 @@ const Tracking = () => {
             <div className="items-list">
               {order.items.map((item, index) => (
                 <div key={index} className="order-item">
-                  <span className="item-name">
-                    {item.quantity}x {item.menuItem?.name}
-                  </span>
-                  <span className="item-price">
-                    HK$ {(item.price * item.quantity).toFixed(2)}
-                  </span>
+                  <span className="item-name">{item.quantity}x {item.menuItem?.name}</span>
+                  <span className="item-price">HK$ {(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>
@@ -205,16 +193,10 @@ const Tracking = () => {
         )}
 
         <div className="tracking-actions">
-          <button 
-            className="support-btn"
-            onClick={() => alert('Customer support: 852-1234-5678')}
-          >
+          <button className="support-btn" onClick={() => alert('Customer support: 852-1234-5678')}>
             📞 Contact Support
           </button>
-          <button 
-            className="reorder-btn"
-            onClick={() => window.location.href = `/restaurant/${order.restaurant?._id}`}
-          >
+          <button className="reorder-btn" onClick={() => window.location.href = `/restaurant/${order.restaurant?._id}`}>
             🔄 Order Again
           </button>
         </div>

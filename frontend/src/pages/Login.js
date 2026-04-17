@@ -12,12 +12,19 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     try {
       setError('');
       setLoading(true);
-      await login(email, password);
-      navigate('/');  // 改为 navigate
+      const user = await login(email, password); // user object returned from AuthContext
+      // Redirect based on role
+      if (user.role === 'delivery_person') {
+        navigate('/delivery');
+      } else if (user.role === 'restaurant_owner') {
+        navigate('/restaurant-dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError('Failed to log in: ' + (err.response?.data?.message || err.message));
     }

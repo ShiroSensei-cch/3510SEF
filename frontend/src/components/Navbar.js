@@ -21,6 +21,21 @@ const Navbar = () => {
           {currentUser ? (
             <>
               <span className="welcome-text">Welcome, {currentUser.name}</span>
+              
+              
+              {currentUser.role === 'delivery_person' && (
+                <Link to="/delivery" className="nav-link">
+                  🚚 Delivery Dashboard
+                </Link>
+              )}
+              
+              
+              {currentUser.role === 'restaurant_owner' && (
+                <Link to="/restaurant-dashboard" className="nav-link">
+                  🍽️ My Restaurant
+                </Link>
+              )}
+
               <button onClick={handleLogout} className="logout-btn">
                 Logout
               </button>

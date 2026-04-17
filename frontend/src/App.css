@@ -950,3 +950,242 @@ body {
 .btn-danger:hover {
   background-color: #c0392b;
 }
+
+/* Restaurant Dashboard */
+.restaurant-dashboard {
+  padding: 2rem 0;
+}
+.order-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.status-badge.placed { background: #f39c12; color: white; }
+.status-badge.confirmed { background: #3498db; color: white; }
+.status-badge.preparing { background: #e67e22; color: white; }
+.status-badge.out_for_delivery { background: #9b59b6; color: white; }
+.status-badge.delivered { background: #27ae60; color: white; }
+.update-btn {
+  background: #2c3e50;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.update-btn:hover { background: #1a252f; }
+
+/* ========== DELIVERY DASHBOARD STYLES ========== */
+.delivery-dashboard {
+  padding: 2rem 0;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.delivery-dashboard h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+
+.delivery-dashboard section {
+  margin-bottom: 3rem;
+}
+
+.delivery-dashboard h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid #3498db;
+  display: inline-block;
+}
+
+/* Order cards */
+.delivery-dashboard .order-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.delivery-dashboard .order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.delivery-dashboard .order-card.available {
+  border-left: 5px solid #27ae60;
+}
+
+.delivery-dashboard .order-card h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.delivery-dashboard .order-card p {
+  margin: 0.5rem 0;
+  color: #555;
+  line-height: 1.4;
+}
+
+.delivery-dashboard .order-card strong {
+  color: #2c3e50;
+}
+
+/* Order actions buttons */
+.delivery-dashboard .actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.delivery-dashboard button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delivery-dashboard button:hover {
+  transform: translateY(-2px);
+}
+
+/* Start tracking button */
+.delivery-dashboard .start-tracking-btn {
+  background-color: #3498db;
+  color: white;
+}
+
+.delivery-dashboard .start-tracking-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Stop tracking button */
+.delivery-dashboard .stop-tracking-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delivery-dashboard .stop-tracking-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Accept order button */
+.delivery-dashboard .accept-btn {
+  background-color: #27ae60;
+  color: white;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.delivery-dashboard .accept-btn:hover {
+  background-color: #219a52;
+}
+
+/* Deliver button */
+.delivery-dashboard .deliver-btn {
+  background-color: #f39c12;
+  color: white;
+}
+
+.delivery-dashboard .deliver-btn:hover {
+  background-color: #e67e22;
+}
+
+/* Completed button (disabled) */
+.delivery-dashboard .completed-btn {
+  background-color: #95a5a6;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.delivery-dashboard .completed-btn:hover {
+  transform: none;
+}
+
+/* Current location display */
+.delivery-dashboard .current-location {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 1rem;
+  animation: fadeIn 0.5s;
+}
+
+.delivery-dashboard .current-location h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.delivery-dashboard .current-location p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.delivery-dashboard .tracking-note {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+/* No orders message */
+.delivery-dashboard .no-orders {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  color: #7f8c8d;
+}
+
+/* Available orders section special */
+.delivery-dashboard .available-orders h2 {
+  border-bottom-color: #27ae60;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .delivery-dashboard .actions {
+    flex-direction: column;
+  }
+  .delivery-dashboard button {
+    width: 100%;
+  }
+  .delivery-dashboard .order-card {
+    padding: 1rem;
+  }
+}
+
+/* Loading spinner (optional) */
+.delivery-dashboard .loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #3498db;
+}
